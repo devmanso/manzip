@@ -92,6 +92,11 @@ char* encodeString(char* src, int max_rlen)
  
         /* Copy the first occurrence of the new character */
         dest[j++] = src[i];
+
+        /* Check if the character is a digit */
+        if (isdigit(src[i])) {
+            continue;  // If it's a digit, skip encoding
+        }
  
         /* Count the number of occurrences of the new character */
         rLen = 1;
