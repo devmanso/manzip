@@ -3,29 +3,44 @@
 #include "headers/manzip.h"
 
 int main() {
-    FILE* inputFile = fopen("input.wasd", "r");
+    // FILE* inputFile = fopen("input.wasd", "r");
 
-    if(!inputFile) {
-        perror("could not open input file");
-        fclose(inputFile);
-        return EXIT_FAILURE;
-    }
+    // if(!inputFile) {
+    //     perror("could not open input file");
+    //     fclose(inputFile);
+    //     return EXIT_FAILURE;
+    // }
 
-    FILE* outputFile = fopen("output.wasd", "w");
+    // FILE* outputFile = fopen("output.wasd", "w");
 
-    if(!outputFile) {
-        perror("could not open output file");
-        fclose(outputFile);
-        return EXIT_FAILURE;
-    }
+    // if(!outputFile) {
+    //     perror("could not open output file");
+    //     fclose(outputFile);
+    //     return EXIT_FAILURE;
+    // }
 
-    int max_rlen = 9;
+    // int max_rlen = 9;
 
-    encodeFile(inputFile, outputFile, max_rlen);
+    // encodeFile(inputFile, outputFile, max_rlen);
 
-    fclose(inputFile);
-    fclose(outputFile);
-    printf("Success");
+    // fclose(inputFile);
+    // fclose(outputFile);
+    // printf("Success");
+
+    FILE* reinput = fopen("output.wasd", "r");
+    FILE* reoutput = fopen("reconstruct.wasd", "w");
+    decodeFile(reinput, reoutput);
+    printf("done");
+
+    fclose(reinput);
+    fclose(reoutput);
+
+    // while(1==1) {
+    //     char buff[1024];
+    //     int input = scanf("%s", buff);
+    //     char* decodedString = decodeString(buff);
+    //     printf("%s \n", decodeString(buff));
+    // }
 
     // FILE* inputFile = fopen("input.wasd", "rb");
     // if(!inputFile) {

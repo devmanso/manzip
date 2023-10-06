@@ -119,6 +119,119 @@ char* encodeString(char* src, int max_rlen)
     return dest;
 }
 
+
+/* Decodes the Run Length Encoded string */
+// char* decodeString(const char* rleSrc)
+// {
+//     int len = strlen(rleSrc);
+
+//     /* The maximum possible length of the decoded string is twice the length
+//        of the input string (in case all characters are encoded). */
+//     char* decoded = (char*)malloc(sizeof(char) * (len * 2 + 1));
+
+//     int i, j = 0;
+
+//     for (i = 0; i < len; i++) {
+//         char currentChar = rleSrc[i];
+
+//         if (isdigit(currentChar)) {
+//             /* Skip numbers, as they are not encoded */
+//             continue;
+//         } else if (isalpha(currentChar) || strchr("_,(*&^$", currentChar) != NULL) {
+//             /* If it's an alphabetical character or a special character, it is encoded */
+//             int count = 0;
+
+//             /* Calculate the run length */
+//             while (i + 1 < len && isdigit(rleSrc[i + 1])) {
+//                 count = count * 10 + (rleSrc[i + 1] - '0');
+//                 i++;
+//             }
+
+//             /* If count is 0, set it to 1 */
+//             count = (count == 0) ? 1 : count;
+
+//             /* Repeat the character count times in the decoded string */
+//             for (int k = 0; k < count; k++) {
+//                 decoded[j++] = currentChar;
+//             }
+//         } else {
+//             /* Other characters are not encoded, copy them as is */
+//             decoded[j++] = currentChar;
+//         }
+//     }
+
+//     /* Terminate the decoded string */
+//     decoded[j] = '\0';
+
+//     return decoded;
+// }
+
+char specialCharacters[] = "~!@#$%^&*()_+-={}|[]\\:\";\'<>?,./";
+
+char* decodeString(const char* rleSrc)
+{
+    int len = strlen(rleSrc);
+
+    /* The maximum possible length of the decoded string is twice the length
+       of the input string (in case all characters are encoded). */
+    char* decoded = (char*)malloc(sizeof(char) * (len * 2 + 1));
+
+    int i, j = 0;
+
+    for (i = 0; i < len; i++) {
+        char currentChar = rleSrc[i];
+
+        if (isdigit(currentChar)) {
+            /* Skip numbers, as they are not encoded */
+            continue;
+        } else if (isalpha(currentChar) || strchr(specialCharacters, currentChar) != NULL) {
+            /* If it's an alphabetical character or a special character, it is encoded */
+            int count = 1;  // Assume default run length is 1
+
+            /* Check if the next character is a digit */
+            if (i + 1 < len && isdigit(rleSrc[i + 1])) {
+                count = rleSrc[i + 1] - '0';
+                i++;  // Skip the digit
+            }
+
+            /* Repeat the character count times in the decoded string */
+            for (int k = 0; k < count; k++) {
+                decoded[j++] = currentChar;
+            }
+        } else {
+            /* Other characters are not encoded, copy them as is */
+            decoded[j++] = currentChar;
+        }
+    }
+
+    /* Terminate the decoded string */
+    decoded[j] = '\0';
+
+    return decoded;
+}
+
+
+/* Decodes the content of an input file and writes the decoded content to an output file */
+void decodeFile(FILE* inputFile, FILE* outputFile) {
+    char buffer[1024];  // Adjust the buffer size as needed
+
+    /* Read each line from the input file */
+    while (fgets(buffer, sizeof(buffer), inputFile) != NULL) {
+        /* Remove newline character if present */
+        char* newline = strchr(buffer, '\n');
+        if (newline != NULL) {
+            *newline = '\0';
+        }
+
+        /* Decode the string and write to the output file */
+        char* decodedString = decodeString(buffer);
+        fprintf(outputFile, "%s\n", decodedString);
+
+        /* Free the memory allocated by decodeString */
+        free(decodedString);
+    }
+}
+
 void encodeFile(FILE* inputFile, FILE* outputFile, int max_rlen) {
     // Buffer to read each line from the file
     char buffer[1024];
