@@ -6,6 +6,8 @@
 
 * This is liscensed under MIT Liscense, I am not responsible for any damages to your data or system.
 
+* The program can be downloaded as Windows executable (.exe) on the releases tab of this github page. If you want a binary for a different OS like Linux or MacOS you will need to compile this on your own machine.
+
 ## Under-The-Hood
 
 The way this program encodes/decodes files is through run-length-encoding. This means that sometimes file sizes might actually increase when encoded ("abcd" turns into "a1b1c1d1" when encoded).
