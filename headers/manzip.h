@@ -183,7 +183,8 @@ char* decodeString(const char* rleSrc)
 
         if (isdigit(currentChar)) {
             /* Skip numbers, as they are not encoded */
-            continue;
+            //continue;
+            decoded[j++] = currentChar;
         } else if (isalpha(currentChar) || strchr(specialCharacters, currentChar) != NULL) {
             /* If it's an alphabetical character or a special character, it is encoded */
             int count = 1;  // Assume default run length is 1
